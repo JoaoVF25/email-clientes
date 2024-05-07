@@ -182,14 +182,14 @@ def execute_code():
     except Exception as e:
         messagebox.showerror('Erro', f'Ocorreu um erro ao executar o código:\n\n{str(e)}')
 
-# Cria a janela principal
+#CRIAR A JANELA PRINCIPAL (INTERFACE)
 window = tk.Tk()
 window.title('Executar Código')
 window.geometry('300x100')
 
-# Cria um botão para executar o código
+# BOTAO PARA EXECUTAR O CÓDIGO
 button = tk.Button(window, text='Executar', command=execute_code)
 button.pack(pady=20)
 
-# Inicia o loop da interface gráfica
+# LOOP DA INTERFACE GRÁFICA
 window.mainloop()
