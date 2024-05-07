@@ -9,20 +9,20 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
 def fetch_data(symbol):
-    today = datetime.today()
-    start_of_year = datetime(today.year, 1, 1)
-    start_of_month = today - timedelta(days=30)
-    data_ytd = yf.download(symbol, start=start_of_year, end=today)
-    data_month = yf.download(symbol, start=start_of_month, end=today)
-    latest = data_ytd.iloc[-1]
-    first_ytd = data_ytd.iloc[0]
-    first_month = data_month.iloc[0]
-    previous = data_ytd.iloc[-2]
-    close_price = latest['Close']
-    daily_change = (latest['Close'] - previous['Close']) / previous['Close'] * 100
-    monthly_change = (latest['Close'] - first_month['Close']) / first_month['Close'] * 100
-    ytd_change = (latest['Close'] - first_ytd['Close']) / first_ytd['Close'] * 100
-    return close_price, daily_change, monthly_change, ytd_change
+    hoje = datetime.today()
+    comeco_do_ano = datetime(hoje.year, 1, 1)
+    comeco_do_mes = hoje - timedelta(days=30)
+    data_ytd = yf.download(symbol, start=comeco_do_ano, end=hoje)
+    data_mes = yf.download(symbol, start=comeco_do_mes, end=hoje)
+    ultimo = data_ytd.iloc[-1]
+    primeiro_ytd = data_ytd.iloc[0]
+    first_month = data_mes.iloc[0]
+    anterior = data_ytd.iloc[-2]
+    preco_fechamento= ultimo['Close']
+    mudanca_diaria = (ultimo['Close'] - anterior['Close']) / anterior['Close'] * 100
+    mudanca_mes = (ultimo['Close'] - first_month['Close']) / first_month['Close'] * 100
+    mudanca_ytd = (ultimo['Close'] - primeiro_ytd['Close']) / primeiro_ytd['Close'] * 100
+    return preco_fechamento, mudanca_diaria, mudanca_mes, mudanca_ytd 
 
 def generate_chart(symbol, period, title, filename):
     data = yf.download(symbol, period=period)
@@ -32,7 +32,7 @@ def generate_chart(symbol, period, title, filename):
     plt.close()
 
 def get_news():
-    with open('C:/Users/João Victor/Desktop/Email/noticias.txt', 'r', encoding='utf-8') as f:
+    with open('noticias.txt', 'r', encoding='utf-8') as f:
         news = f.readlines()
     return news
 
@@ -41,7 +41,7 @@ def send_email(client_email, ibov_values, small_values, dolar_values, sp500_valu
     port = 587
     sender_email = ''
     password = ''
-    with open('C:/Users/João Victor/Desktop/Email/config.txt', 'r') as f:
+    with open('config.txt', 'r') as f:
         sender_email = f.readline().strip()
         password = f.readline().strip()
 
@@ -170,7 +170,7 @@ def send_email(client_email, ibov_values, small_values, dolar_values, sp500_valu
 
 def execute_code():
     try:
-        with open('C:/Users/João Victor/Desktop/Email/destinatarios.txt', 'r') as f:
+        with open('destinatarios.txt', 'r') as f:
             client_emails = [email.strip() for email in f.readlines()]
         ibov_values = fetch_data('^BVSP')
         small_values = fetch_data('SMAL11.SA')
